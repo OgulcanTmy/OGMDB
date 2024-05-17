@@ -7,23 +7,27 @@
 
 import Foundation
 
-struct MovieName: Codable {
+struct MovieModel: Codable {
     let title: String
+    let movieID: String
+    let poster: String
 
     enum CodingKeys: String, CodingKey {
         case title = "Title"
+        case movieID = "imdbID"
+        case poster = "Poster"
     }
 }
 
 struct SearchResponse: Codable {
-    let search: [MovieName]
+    let search: [MovieModel]
 
     enum CodingKeys: String, CodingKey {
         case search = "Search"
     }
 }
 
-struct MovieData: Codable {
+struct MovieDetailModel: Codable {
     let title: String
     let year: String
     let runtime: String
@@ -33,6 +37,7 @@ struct MovieData: Codable {
     let actors: String
     let plot: String
     let imdbRating: String
+    let poster: String
 
     enum CodingKeys: String, CodingKey {
         case title = "Title"
@@ -43,6 +48,7 @@ struct MovieData: Codable {
         case writer = "Writer"
         case actors = "Actors"
         case plot = "Plot"
+        case poster = "Poster"
         case imdbRating
     }
 }

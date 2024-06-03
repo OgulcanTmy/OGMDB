@@ -18,7 +18,7 @@ class MovieCell: UITableViewCell {
         movieName.text = movie.title
         moviePoster.kf.indicatorType = .activity
         moviePoster.kf.setImage(
-            with: URL(string: movie.poster),
+            with: URL(string: movie.poster ?? ""),
             placeholder: nil,
             options: [.cacheOriginalImage, .transition(.fade(0.5))]
         ) { [weak self] result in

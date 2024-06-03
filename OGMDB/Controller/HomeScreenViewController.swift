@@ -14,7 +14,7 @@ class HomeScreenViewController: UIViewController {
     @IBOutlet private weak var searchTextField: UITextField!
     @IBOutlet private weak var searchResultTableView: UITableView!
 
-    let baseUrl = "https://www.omdbapi.com/?apikey=483d6504"
+    let baseUrl = Constants.Network.baseURL
     let cellName = String(describing: MovieCell.self)
 
     private var movies: [MovieModel] = [] {
@@ -29,7 +29,6 @@ class HomeScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        searchTextField.delegate = self
         searchResultTableView.register(
             UINib(nibName: cellName, bundle: nil),
             forCellReuseIdentifier: cellName
@@ -40,11 +39,8 @@ class HomeScreenViewController: UIViewController {
 
     @IBAction func searchButtonPressed(_ sender: Any) {
         guard let searchText = searchTextField.text, searchText.count > 2 else {
-            debugPrint("Search bar empty")
-            let failAlert = UIAlertController(title: "En az üç harf giriniz.", message: "", preferredStyle: .alert)
-            let failAction = UIAlertAction(title: "Tamam", style: .default)
-            failAlert.addAction(failAction)
-            present(failAlert, animated: true)
+            let errorTitle = Constants.HomeVC.minCharErrorTitle
+            showAlert(title: errorTitle)
             searchTextField.text = ""
             return
         }
@@ -53,24 +49,26 @@ class HomeScreenViewController: UIViewController {
 
         currentPage = 1
 
-        fetchData(for: searchText, page: currentPage)
+        fetchData(for: searchText, page: currentPage, shouldShowLoading: true)
     }
 
-    private func fetchData(for searchText: String, page: Int) {
+    private func fetchData(for searchText: String, page: Int, shouldShowLoading: Bool = false) {
         guard !isLoading else { return }
 
+        shouldShowLoading ? showLoading() : nil
         isLoading = true
 
         AF.request("\(baseUrl)&s=\(searchText)&page=\(page)", method: .get).response { [weak self] response in
             guard let self = self else { return }
-
+            shouldShowLoading ? hideLoading() : nil
             self.isLoading = false
 
-            if let error = response.error {
-                print(error)
+            if let _ = response.error {
+                showAlert(title: Constants.HomeVC.unableToFetch)
             } else if let data = response.data,
-                      let parsedData = self.parseJSON(from: data, into: SearchResponse.self) {
-                self.movies.append(contentsOf: parsedData.search)
+                      let parsedData = self.parseJSON(from: data, into: SearchResponse.self),
+                      let movies = parsedData.search {
+                self.movies.append(contentsOf: movies)
             }
         }
     }
@@ -81,14 +79,10 @@ class HomeScreenViewController: UIViewController {
             let decodedData = try decoder.decode(modelType, from: data)
             return decodedData
         } catch {
-            print(error)
+            showAlert(title: Constants.HomeVC.unableToFetch)
             return nil
         }
     }
-}
-
-extension HomeScreenViewController: UITextFieldDelegate {
-
 }
 
 extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
@@ -111,11 +105,13 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         searchResultTableView.deselectRow(at: indexPath, animated: true)
-        let movieID = movies[indexPath.row].movieID
+        let movieID = movies[indexPath.row].movieID ?? ""
+        showLoading()
         AF.request("\(baseUrl)&i=\(movieID)", method: .get).response { [weak self] response in
             guard let self = self else { return }
-            if let error = response.error {
-                print(error)
+            hideLoading()
+            if let _ = response.error {
+                showAlert(title: Constants.HomeVC.unableToFetch)
             } else if let data = response.data,
                       let movieData = self.parseJSON(from: data, into: MovieDetailModel.self) {
                 let detailVC = MovieDetailViewController()

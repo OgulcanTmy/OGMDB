@@ -16,32 +16,31 @@ class SplashScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        fetchValues()
-        checkNetworkConnection()
+        checkNetworkAndFetchLogo()
     }
 
     private let remoteConfig = RemoteConfig.remoteConfig()
 
-    func fetchValues() {
+    func fetchLogoAndRoute() {
         let settings = RemoteConfigSettings()
         settings.minimumFetchInterval = 0
         remoteConfig.configSettings = settings
 
         remoteConfig.fetch(withExpirationDuration: 0) { [weak self] status, error in
             guard let self = self else { return }
-            if status == .success, error == nil {
+            let logo = Constants.Image.ogmdbLogo
+            if status == .success,
+                error == nil {
                 self.remoteConfig.activate(completion: { [weak self] _, error in
-                    guard let self = self,
-                          error == nil else {
-                        return
-                    }
-                    let cachedValue = self.remoteConfig.configValue(forKey: "splashScreenLogoName").stringValue
-                    print("fetched \(cachedValue ?? "no value")")
-
-                    self.updateLogo(remoteConfigString: cachedValue ?? "ogmdbLogo")
+                    guard let self = self, error == nil else { return }
+                    let rcLogoKey = Constants.AppConstants.remoteConfigLogoKey
+                    let cachedValue = self.remoteConfig.configValue(forKey: rcLogoKey).stringValue
+                    self.updateLogo(remoteConfigString: cachedValue ?? logo)
+                    goToHomeScreen()
                 })
             } else {
-                self.updateLogo(remoteConfigString: "ogmdbLogo")
+                self.updateLogo(remoteConfigString: logo)
+                goToHomeScreen()
             }
         }
     }
@@ -52,32 +51,24 @@ class SplashScreenViewController: UIViewController {
         }
     }
 
-    func checkNetworkConnection() {
+    func checkNetworkAndFetchLogo() {
         let monitor = NWPathMonitor()
         monitor.pathUpdateHandler = { [weak self] path in
             guard let self = self else { return }
             if path.status == .satisfied {
                 monitor.cancel()
-                self.goToHomeScreen()
-                print("Internet connection is available.")
+                fetchLogoAndRoute()
             } else {
-                self.showNetworkError()
-                print("Internet connection is not available.")
+                let title = Constants.SplashVC.noConnectionErrorTitle
+                showAlert(title: title)
             }
         }
         monitor.start(queue: DispatchQueue.main)
     }
 
-    private func showNetworkError() {
-        let failAlert = UIAlertController(title: "Internete bağlı değilsiniz", message: "", preferredStyle: .alert)
-        let failAction = UIAlertAction(title: "Tamam", style: .default)
-        failAlert.addAction(failAction)
-        present(failAlert, animated: true)
-    }
-
     func goToHomeScreen() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            let vc = HomeScreenViewController(nibName: "HomeScreenViewController", bundle: nil)
+            let vc = HomeScreenViewController(nibName: String(describing: HomeScreenViewController.self), bundle: nil)
             self.navigationController?.setViewControllers([vc], animated: true)
         }
     }

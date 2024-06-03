@@ -30,7 +30,7 @@ class MovieDetailViewController: UIViewController {
         descriptionLabel.text = movieModel?.plot ?? ""
         moviePosterImageView.kf.indicatorType = .activity
         moviePosterImageView.kf.setImage(
-            with: URL(string: model.poster),
+            with: URL(string: model.poster ?? ""),
             placeholder: nil,
             options: [.cacheOriginalImage, .transition(.fade(0.2))]
         ) { [weak self] result in
@@ -38,7 +38,7 @@ class MovieDetailViewController: UIViewController {
             switch result {
                 case .success: break
                 case .failure:
-                    moviePosterImageView.image = UIImage(named: "ogmdbLogo")
+                    moviePosterImageView.image = UIImage(named: Constants.Image.ogmdbLogo)
             }
         }
     }

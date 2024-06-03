@@ -8,9 +8,9 @@
 import Foundation
 
 struct MovieModel: Codable {
-    let title: String
-    let movieID: String
-    let poster: String
+    let title: String?
+    let movieID: String?
+    let poster: String?
 
     enum CodingKeys: String, CodingKey {
         case title = "Title"
@@ -20,7 +20,7 @@ struct MovieModel: Codable {
 }
 
 struct SearchResponse: Codable {
-    let search: [MovieModel]
+    let search: [MovieModel]?
 
     enum CodingKeys: String, CodingKey {
         case search = "Search"
@@ -28,16 +28,16 @@ struct SearchResponse: Codable {
 }
 
 struct MovieDetailModel: Codable {
-    let title: String
-    let year: String
-    let runtime: String
-    let genre: String
-    let director: String
-    let writer: String
-    let actors: String
-    let plot: String
-    let imdbRating: String
-    let poster: String
+    let title: String?
+    let year: String?
+    let runtime: String?
+    let genre: String?
+    let director: String?
+    let writer: String?
+    let actors: String?
+    let plot: String?
+    let imdbRating: String?
+    let poster: String?
 
     enum CodingKeys: String, CodingKey {
         case title = "Title"

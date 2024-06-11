@@ -35,6 +35,7 @@ class HomeScreenViewController: UIViewController {
         )
         searchResultTableView.dataSource = self
         searchResultTableView.delegate = self
+        hideKeyboardWhenTappedAround()
     }
 
     @IBAction func searchButtonPressed(_ sender: Any) {
@@ -122,6 +123,7 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        view.endEditing(true)
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let height = scrollView.frame.size.height

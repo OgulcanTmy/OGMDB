@@ -14,8 +14,11 @@ class MovieCell: UITableViewCell {
     
     @IBOutlet weak var movieName: UILabel!
 
+    @IBOutlet weak var movieYear: UITextField!
+    
     func setupUI(with movie: MovieModel) {
         movieName.text = movie.title
+        movieYear.text = movie.year
         moviePoster.kf.indicatorType = .activity
         moviePoster.kf.setImage(
             with: URL(string: movie.poster ?? ""),

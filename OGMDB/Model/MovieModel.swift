@@ -11,11 +11,13 @@ struct MovieModel: Codable {
     let title: String?
     let movieID: String?
     let poster: String?
+    let year: String?
 
     enum CodingKeys: String, CodingKey {
         case title = "Title"
         case movieID = "imdbID"
         case poster = "Poster"
+        case year = "Year"
     }
 }
 

@@ -23,45 +23,58 @@
             <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="es0-sx-nke">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="es0-sx-nke">
                     <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="BOz-Vi-p3o">
-                            <rect key="frame" x="0.0" y="201" width="393" height="396.66666666666674"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DPZ-Wr-B8I">
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="417"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="TITLE LABEL" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G0p-uF-ShM" userLabel="Title Label">
-                                    <rect key="frame" x="0.0" y="0.0" width="393" height="20.333333333333332"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" systemColor="systemYellowColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C4e-fs-3F0" userLabel="Movie Poster">
-                                    <rect key="frame" x="0.0" y="35.333333333333314" width="393" height="250"/>
-                                </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="3.3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TIQ-fp-mao" userLabel="Rate Label">
-                                    <rect key="frame" x="0.0" y="300.33333333333331" width="393" height="20.333333333333314"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" systemColor="systemYellowColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ML-25-VSN" userLabel="Description Label">
-                                    <rect key="frame" x="0.0" y="335.66666666666669" width="393" height="61"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" systemColor="systemYellowColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="BOz-Vi-p3o">
+                                    <rect key="frame" x="20" y="0.0" width="353" height="417"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="TITLE LABEL" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G0p-uF-ShM" userLabel="Title Label">
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="20.333333333333332"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" systemColor="systemYellowColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="C4e-fs-3F0" userLabel="Movie Poster">
+                                            <rect key="frame" x="0.0" y="35.333333333333314" width="353" height="250"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3.3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TIQ-fp-mao" userLabel="Rate Label">
+                                            <rect key="frame" x="0.0" y="300.33333333333331" width="353" height="20.333333333333314"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" systemColor="systemYellowColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO " textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ML-25-VSN" userLabel="Description Label">
+                                            <rect key="frame" x="0.0" y="335.66666666666669" width="353" height="81.333333333333314"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" systemColor="systemYellowColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
                             </subviews>
-                        </stackView>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="BOz-Vi-p3o" secondAttribute="trailing" constant="20" id="26p-X9-ff4"/>
+                                <constraint firstAttribute="bottom" secondItem="BOz-Vi-p3o" secondAttribute="bottom" id="MlG-dv-uxg"/>
+                                <constraint firstItem="BOz-Vi-p3o" firstAttribute="leading" secondItem="DPZ-Wr-B8I" secondAttribute="leading" constant="20" id="N6h-KC-otY"/>
+                                <constraint firstItem="BOz-Vi-p3o" firstAttribute="top" secondItem="DPZ-Wr-B8I" secondAttribute="top" id="ZX8-sC-uRB"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="BOz-Vi-p3o" firstAttribute="leading" secondItem="es0-sx-nke" secondAttribute="leading" id="QgB-Yf-XId"/>
-                        <constraint firstItem="BOz-Vi-p3o" firstAttribute="top" secondItem="es0-sx-nke" secondAttribute="top" id="UON-9W-vpi"/>
-                        <constraint firstAttribute="trailing" secondItem="BOz-Vi-p3o" secondAttribute="trailing" id="Yc9-ED-YCX"/>
-                        <constraint firstAttribute="bottom" secondItem="BOz-Vi-p3o" secondAttribute="bottom" id="iLC-sd-bvw"/>
-                        <constraint firstItem="BOz-Vi-p3o" firstAttribute="width" secondItem="es0-sx-nke" secondAttribute="width" id="mAL-14-LNA"/>
+                        <constraint firstItem="DPZ-Wr-B8I" firstAttribute="trailing" secondItem="JaP-5x-GpO" secondAttribute="trailing" id="anR-LO-MAQ"/>
+                        <constraint firstItem="DPZ-Wr-B8I" firstAttribute="bottom" secondItem="JaP-5x-GpO" secondAttribute="bottom" id="eAV-wC-hAp"/>
+                        <constraint firstItem="DPZ-Wr-B8I" firstAttribute="leading" secondItem="JaP-5x-GpO" secondAttribute="leading" id="lEi-Zi-qT3"/>
+                        <constraint firstItem="JaP-5x-GpO" firstAttribute="top" secondItem="DPZ-Wr-B8I" secondAttribute="top" id="mki-lI-FLN"/>
+                        <constraint firstItem="DPZ-Wr-B8I" firstAttribute="width" secondItem="AWY-gx-lpZ" secondAttribute="width" id="pNn-eQ-ms2"/>
+                        <constraint firstItem="DPZ-Wr-B8I" firstAttribute="height" secondItem="AWY-gx-lpZ" secondAttribute="height" priority="250" id="xsX-Kl-2WP"/>
                     </constraints>
-                    <viewLayoutGuide key="contentLayoutGuide" id="XlW-nG-YGp"/>
-                    <viewLayoutGuide key="frameLayoutGuide" id="8hj-iA-tpm"/>
+                    <viewLayoutGuide key="contentLayoutGuide" id="JaP-5x-GpO"/>
+                    <viewLayoutGuide key="frameLayoutGuide" id="AWY-gx-lpZ"/>
                 </scrollView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

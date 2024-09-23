@@ -35,7 +35,7 @@ class SplashScreenViewController: UIViewController {
                     guard let self = self, error == nil else { return }
                     let rcLogoKey = Constants.AppConstants.remoteConfigLogoKey
                     let cachedValue = self.remoteConfig.configValue(forKey: rcLogoKey).stringValue
-                    self.updateLogo(remoteConfigString: cachedValue ?? logo)
+                    self.updateLogo(remoteConfigString: cachedValue)
                     goToHomeScreen()
                 })
             } else {

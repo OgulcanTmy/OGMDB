@@ -1,16 +1,16 @@
 # Uncomment the next line to define a global platform for your project
- platform :ios, '16.0'
+platform :ios, '16.0'
 
 target 'OGMDB' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
   # Pods for OGMDB
-	pod 'FirebaseCore', '~> 7.0.0'
-  	pod 'FirebaseRemoteConfig', '~> 7.0.0'
-    pod 'lottie-ios'
-    pod 'Alamofire'
-    pod 'Kingfisher'
+  pod 'FirebaseCore'
+  pod 'FirebaseRemoteConfig'
+  pod 'lottie-ios'
+  pod 'Alamofire'
+  pod 'Kingfisher'
 end
 
 post_install do |installer|

@@ -5,18 +5,14 @@
 //  Created by Oğulcan Tamyürek on 7.05.2024.
 //
 
-import UIKit
 import Kingfisher
+import UIKit
 
 class MovieCell: UITableViewCell {
+    @IBOutlet private var moviePoster: UIImageView!
+    @IBOutlet private var movieName: UILabel!
+    @IBOutlet private var movieYear: UILabel!
 
-    @IBOutlet weak var moviePoster: UIImageView!
-    
-    @IBOutlet weak var movieName: UILabel!
-
-
-    @IBOutlet weak var movieYear: UILabel!
-    
     func setupUI(with movie: MovieModel) {
         movieName.text = movie.title
         movieYear.text = movie.year
@@ -36,5 +32,4 @@ class MovieCell: UITableViewCell {
         }
         accessoryType = .disclosureIndicator
     }
-
 }

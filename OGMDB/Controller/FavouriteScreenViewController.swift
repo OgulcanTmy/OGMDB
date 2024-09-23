@@ -5,17 +5,17 @@
 //  Created by Oğulcan Tamyürek on 29.08.2024.
 //
 
-import UIKit
 import Alamofire
 import CoreData
+import UIKit
 
 class FavouriteScreenViewController: UIViewController {
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet private var tableView: UITableView!
 
-    let baseUrl = Constants.Network.baseURL
-    let cellName = String(describing: MovieCell.self)
+    private let baseUrl = Constants.Network.baseURL
+    private let cellName = String(describing: MovieCell.self)
 
-    var items: [MovieModel]? {
+    private var items: [MovieModel]? {
         didSet {
             updateBackgroundView()
             tableView.reloadData()
@@ -29,7 +29,7 @@ class FavouriteScreenViewController: UIViewController {
             UINib(nibName: cellName, bundle: nil),
             forCellReuseIdentifier: cellName
         )
-        
+
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -54,11 +54,9 @@ class FavouriteScreenViewController: UIViewController {
             }
             self.items = itemsArray
         }
-
     }
 
-
-    func parseJSON<T: Codable>(from data: Data, into modelType: T.Type) -> T? {
+    private func parseJSON<T: Codable>(from data: Data, into modelType: T.Type) -> T? {
         let decoder = JSONDecoder()
         do {
             let decodedData = try decoder.decode(modelType, from: data)
@@ -69,13 +67,13 @@ class FavouriteScreenViewController: UIViewController {
         }
     }
 
-    func updateBackgroundView() {
+    private func updateBackgroundView() {
         if let items = items, items.isEmpty {
             let messageLabel = UILabel()
             messageLabel.text = Constants.FavouriteVC.noMoviesAddedText
             messageLabel.textAlignment = .center
             messageLabel.textColor = .systemYellow
-            messageLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+            messageLabel.font = .systemFont(ofSize: 18, weight: .medium)
             tableView.backgroundView = messageLabel
         } else {
             tableView.backgroundView = nil
@@ -84,20 +82,20 @@ class FavouriteScreenViewController: UIViewController {
 }
 
 extension FavouriteScreenViewController: UITableViewDataSource, UITableViewDelegate {
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: cellName,
             for: indexPath
-        ) as? MovieCell else {
+        ) as? MovieCell,
+            let items
+        else {
             return UITableViewCell()
         }
-        cell.setupUI(with: items![indexPath.row])
+        cell.setupUI(with: items[indexPath.row])
         return cell
     }
 
@@ -106,20 +104,23 @@ extension FavouriteScreenViewController: UITableViewDataSource, UITableViewDeleg
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let items else { return }
+
         tableView.deselectRow(at: indexPath, animated: true)
-        let movieID = items![indexPath.row].movieId ?? ""
+        let movieID = items[indexPath.row].movieId ?? ""
         showLoading()
         AF.request("\(baseUrl)&i=\(movieID)", method: .get).response { [weak self] response in
-            guard let self = self else { return }
+            guard let self else { return }
+
             hideLoading()
-            if let _ = response.error {
+            if response.error != nil {
                 showAlert(title: Constants.HomeVC.unableToFetch)
             } else if let data = response.data,
-                      var movieData = self.parseJSON(from: data, into: MovieDetailModel.self) {
+                      var movieData = self.parseJSON(from: data, into: MovieDetailModel.self)
+            {
                 movieData.isFavourite = true
                 movieData.movieId = movieID
-                let detailVC = MovieDetailViewController()
-                detailVC.setModel(with: movieData)
+                let detailVC = MovieDetailViewController(movieModel: movieData)
                 self.navigationController?.pushViewController(detailVC, animated: true)
             }
         }

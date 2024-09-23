@@ -39,5 +39,4 @@ enum Constants {
         static let favoriteMovieAddedText = "Added to Favorites !"
         static let favoriteMovieRemovedText = "Removed from Favorites !"
     }
-
 }

@@ -8,8 +8,5 @@
 import UIKit
 
 class NotificationCell: UIView {
-
-    @IBOutlet weak var notificationLabel: UILabel!
-    
-
+    @IBOutlet var notificationLabel: UILabel!
 }

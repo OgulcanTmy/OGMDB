@@ -5,8 +5,8 @@
 //  Created by Oğulcan Tamyürek on 3.09.2024.
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 final class CoreDataHelper {
     static let shared = CoreDataHelper()
@@ -14,7 +14,7 @@ final class CoreDataHelper {
 
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "MovieModel")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+        container.loadPersistentStores(completionHandler: { _, error in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }

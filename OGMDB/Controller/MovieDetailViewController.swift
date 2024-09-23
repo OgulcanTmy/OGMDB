@@ -5,74 +5,76 @@
 //  Created by Oğulcan Tamyürek on 6.05.2024.
 //
 
-import UIKit
-import Kingfisher
 import CoreData
+import Kingfisher
+import UIKit
 
-class MovieDetailViewController: UIViewController {
-    @IBOutlet weak var moviePosterImageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var rateLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var favoriteButton: UIButton!
+final class MovieDetailViewController: UIViewController {
+    @IBOutlet private var moviePosterImageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var rateLabel: UILabel!
+    @IBOutlet private var descriptionLabel: UILabel!
+    @IBOutlet private var favoriteButton: UIButton!
 
-    var movieModel: MovieDetailModel?
-    var notificationCell: NotificationCell?
+    private var movieModel: MovieDetailModel
+    private var notificationCell: NotificationCell?
+
+    init(movieModel: MovieDetailModel) {
+        self.movieModel = movieModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI(with: movieModel!)
+        setupUI(with: movieModel)
         setupNotificationCell()
     }
 
-    @IBAction func favoriteButtonPressed(_ sender: Any) {
+    @IBAction private func favoriteButtonPressed(_ sender: Any) {
+        movieModel.isFavourite?.toggle()
 
-        movieModel?.isFavourite?.toggle()
+        favoriteButton.setImage(movieModel.isFavourite == true ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart"), for: .normal)
 
-        favoriteButton.setImage(movieModel?.isFavourite == true ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart"), for: .normal)
-
-        let message = movieModel?.isFavourite == true ? Constants.MovieDetailVC.favoriteMovieAddedText : Constants.MovieDetailVC.favoriteMovieRemovedText
+        let message = movieModel.isFavourite == true ? Constants.MovieDetailVC.favoriteMovieAddedText : Constants.MovieDetailVC.favoriteMovieRemovedText
 
         showNotification(message: message)
 
         let context = CoreDataHelper.shared.persistentContainer.viewContext
         let coord = context.persistentStoreCoordinator
 
-        if movieModel?.isFavourite == true {
+        if movieModel.isFavourite == true {
             let entity = MovieEntity(context: context)
-            entity.imdbRating = movieModel?.imdbRating
-            entity.movieId = movieModel?.movieId
-            entity.plot = movieModel?.plot
-            entity.poster = movieModel?.poster
-            entity.title = movieModel?.title
-            entity.year = movieModel?.year
-            do {
-                try context.save()
-                print("MovieEntity saved successfully!")
-            } catch {
-                print("Failed to save movie: \(error.localizedDescription)")
-            }
+            entity.imdbRating = movieModel.imdbRating
+            entity.movieId = movieModel.movieId
+            entity.plot = movieModel.plot
+            entity.poster = movieModel.poster
+            entity.title = movieModel.title
+            entity.year = movieModel.year
+            try? context.save()
         } else {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MovieEntity")
-            let predicate = NSPredicate(format: "movieId == %@", movieModel?.movieId ?? "")
+            let predicate = NSPredicate(format: "movieId == %@", movieModel.movieId ?? "")
             fetchRequest.predicate = predicate
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-            do {
-                try coord!.execute(deleteRequest, with: context)
-                print("MovieEntity deleted successfully!")
-            } catch {
-                print("Failed to delete movie: \(error.localizedDescription)")
-            }
+            _ = try? coord!.execute(deleteRequest, with: context)
         }
     }
 
-    func setupNotificationCell() {
-        if let notificationCell = Bundle.main.loadNibNamed("NotificationCell", owner: self, options: nil)?.first as? NotificationCell {
+    private func setupNotificationCell() {
+        if let notificationCell = Bundle.main.loadNibNamed(
+            "NotificationCell",
+            owner: self,
+            options: nil
+        )?.first as? NotificationCell {
             self.notificationCell = notificationCell
 
             let padding: CGFloat = 20
 
-            _ = view.safeAreaInsets.top
             notificationCell.frame = CGRect(
                 x: padding,
                 y: -notificationCell.frame.height,
@@ -87,7 +89,7 @@ class MovieDetailViewController: UIViewController {
         }
     }
 
-    func showNotification(message: String) {
+    private func showNotification(message: String) {
         guard let notificationCell = notificationCell else { return }
 
         notificationCell.notificationLabel.text = message
@@ -106,16 +108,15 @@ class MovieDetailViewController: UIViewController {
         }
     }
 
-    func setModel(with model: MovieDetailModel){
+    private func setupUI(with model: MovieDetailModel) {
         movieModel = model
-    }
-
-    func setupUI(with model: MovieDetailModel) {
-        movieModel = model
-        favoriteButton.setImage(movieModel?.isFavourite == true ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart"), for: .normal)
-        titleLabel.text = movieModel?.title ?? ""
-        rateLabel.text = movieModel?.imdbRating ?? ""
-        descriptionLabel.text = movieModel?.plot ?? ""
+        favoriteButton.setImage(
+            movieModel.isFavourite == true ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart"),
+            for: .normal
+        )
+        titleLabel.text = movieModel.title ?? ""
+        rateLabel.text = movieModel.imdbRating ?? ""
+        descriptionLabel.text = movieModel.plot ?? ""
         moviePosterImageView.kf.indicatorType = .activity
         moviePosterImageView.kf.setImage(
             with: URL(string: model.poster ?? ""),

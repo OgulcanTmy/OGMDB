@@ -5,22 +5,21 @@
 //  Created by Oğulcan Tamyürek on 12.01.2024.
 //
 
-import UIKit
 import Alamofire
 import CoreData
+import UIKit
 
 class HomeScreenViewController: UIViewController {
+    @IBOutlet private var searchButton: UIButton!
+    @IBOutlet private var searchTextField: UITextField!
+    @IBOutlet private var searchResultTableView: UITableView!
 
-    @IBOutlet private weak var searchButton: UIButton!
-    @IBOutlet private weak var searchTextField: UITextField!
-    @IBOutlet private weak var searchResultTableView: UITableView!
-
-    let baseUrl = Constants.Network.baseURL
-    let cellName = String(describing: MovieCell.self)
+    private let baseUrl = Constants.Network.baseURL
+    private let cellName = String(describing: MovieCell.self)
 
     private var movies: [MovieModel] = [] {
         didSet {
-            self.searchResultTableView.reloadData()
+            searchResultTableView.reloadData()
         }
     }
 
@@ -39,7 +38,7 @@ class HomeScreenViewController: UIViewController {
         hideKeyboardWhenTappedAround()
     }
 
-    @IBAction func searchButtonPressed(_ sender: Any) {
+    @IBAction private func searchButtonPressed(_ sender: Any) {
         guard let searchText = searchTextField.text, searchText.count > 2 else {
             let errorTitle = Constants.HomeVC.minCharErrorTitle
             showAlert(title: errorTitle)
@@ -61,7 +60,7 @@ class HomeScreenViewController: UIViewController {
         isLoading = true
 
         AF.request("\(baseUrl)&s=\(searchText)&page=\(page)", method: .get).response { [weak self] response in
-            guard let self = self else { return }
+            guard let self else { return }
             shouldShowLoading ? hideLoading() : nil
             self.isLoading = false
 
@@ -69,14 +68,14 @@ class HomeScreenViewController: UIViewController {
                 showAlert(title: Constants.HomeVC.unableToFetch)
             } else if let data = response.data,
                       let parsedData = self.parseJSON(from: data, into: SearchResponse.self),
-                      let movies = parsedData.search {
+                      let movies = parsedData.search
+            {
                 self.movies.append(contentsOf: movies)
             }
         }
-        
     }
 
-    func parseJSON<T: Codable>(from data: Data, into modelType: T.Type) -> T? {
+    private func parseJSON<T: Codable>(from data: Data, into modelType: T.Type) -> T? {
         let decoder = JSONDecoder()
         do {
             let decodedData = try decoder.decode(modelType, from: data)
@@ -89,13 +88,11 @@ class HomeScreenViewController: UIViewController {
 }
 
 extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return movies.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: cellName,
             for: indexPath
@@ -115,12 +112,14 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
         let movieID = movies[indexPath.row].movieId ?? ""
         showLoading()
         AF.request("\(baseUrl)&i=\(movieID)", method: .get).response { [weak self] response in
-            guard let self = self else { return }
+            guard let self else { return }
+
             hideLoading()
-            if let _ = response.error {
+            if response.error != nil {
                 showAlert(title: Constants.HomeVC.unableToFetch)
             } else if let data = response.data,
-                      var movieData = self.parseJSON(from: data, into: MovieDetailModel.self) {
+                      var movieData = self.parseJSON(from: data, into: MovieDetailModel.self)
+            {
                 let context = CoreDataHelper.shared.persistentContainer.viewContext
                 let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MovieEntity")
                 let predicate = NSPredicate(format: "movieId == %@", movieID)
@@ -135,8 +134,7 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
                 }
 
                 movieData.movieId = movieID
-                let detailVC = MovieDetailViewController()
-                detailVC.setModel(with: movieData)
+                let detailVC = MovieDetailViewController(movieModel: movieData)
                 self.navigationController?.pushViewController(detailVC, animated: true)
             }
         }
@@ -154,4 +152,3 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
 }
-

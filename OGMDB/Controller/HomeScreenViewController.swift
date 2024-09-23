@@ -7,6 +7,7 @@
 
 import UIKit
 import Alamofire
+import CoreData
 
 class HomeScreenViewController: UIViewController {
 
@@ -72,6 +73,7 @@ class HomeScreenViewController: UIViewController {
                 self.movies.append(contentsOf: movies)
             }
         }
+        
     }
 
     func parseJSON<T: Codable>(from data: Data, into modelType: T.Type) -> T? {
@@ -104,9 +106,13 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        160
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         searchResultTableView.deselectRow(at: indexPath, animated: true)
-        let movieID = movies[indexPath.row].movieID ?? ""
+        let movieID = movies[indexPath.row].movieId ?? ""
         showLoading()
         AF.request("\(baseUrl)&i=\(movieID)", method: .get).response { [weak self] response in
             guard let self = self else { return }
@@ -114,7 +120,21 @@ extension HomeScreenViewController: UITableViewDataSource, UITableViewDelegate {
             if let _ = response.error {
                 showAlert(title: Constants.HomeVC.unableToFetch)
             } else if let data = response.data,
-                      let movieData = self.parseJSON(from: data, into: MovieDetailModel.self) {
+                      var movieData = self.parseJSON(from: data, into: MovieDetailModel.self) {
+                let context = CoreDataHelper.shared.persistentContainer.viewContext
+                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MovieEntity")
+                let predicate = NSPredicate(format: "movieId == %@", movieID)
+                fetchRequest.predicate = predicate
+                do {
+                    let result = try? context.fetch(fetchRequest)
+                    if result?.isEmpty == true || result == nil {
+                        movieData.isFavourite = false
+                    } else {
+                        movieData.isFavourite = true
+                    }
+                }
+
+                movieData.movieId = movieID
                 let detailVC = MovieDetailViewController()
                 detailVC.setModel(with: movieData)
                 self.navigationController?.pushViewController(detailVC, animated: true)

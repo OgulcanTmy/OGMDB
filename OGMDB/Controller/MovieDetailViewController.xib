@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MovieDetailViewController" customModule="OGMDB" customModuleProvider="target">
             <connections>
                 <outlet property="descriptionLabel" destination="6ML-25-VSN" id="koS-AD-y7H"/>
+                <outlet property="favoriteButton" destination="EjR-SH-fb7" id="stD-Df-W4T"/>
                 <outlet property="moviePosterImageView" destination="C4e-fs-3F0" id="v9d-NZ-O86"/>
                 <outlet property="rateLabel" destination="TIQ-fp-mao" id="Vr5-Qi-CwR"/>
                 <outlet property="titleLabel" destination="G0p-uF-ShM" id="wVz-YE-uDL"/>
@@ -27,10 +28,10 @@
                     <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DPZ-Wr-B8I">
-                            <rect key="frame" x="0.0" y="0.0" width="393" height="417"/>
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="759"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="BOz-Vi-p3o">
-                                    <rect key="frame" x="20" y="0.0" width="353" height="417"/>
+                                    <rect key="frame" x="20" y="0.0" width="353" height="759"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="TITLE LABEL" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G0p-uF-ShM" userLabel="Title Label">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="20.333333333333332"/>
@@ -41,14 +42,23 @@
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="C4e-fs-3F0" userLabel="Movie Poster">
                                             <rect key="frame" x="0.0" y="35.333333333333314" width="353" height="250"/>
                                         </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EjR-SH-fb7" userLabel="FavoriteButton">
+                                            <rect key="frame" x="0.0" y="300.33333333333331" width="353" height="326.99999999999994"/>
+                                            <color key="tintColor" systemColor="systemYellowColor"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="plain" image="heart" catalog="system"/>
+                                            <connections>
+                                                <action selector="favoriteButtonPressed:" destination="-1" eventType="touchUpInside" id="VQx-Ub-0Bt"/>
+                                            </connections>
+                                        </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3.3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TIQ-fp-mao" userLabel="Rate Label">
-                                            <rect key="frame" x="0.0" y="300.33333333333331" width="353" height="20.333333333333314"/>
+                                            <rect key="frame" x="0.0" y="642.33333333333337" width="353" height="20.333333333333371"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" systemColor="systemYellowColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO DEMO " textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ML-25-VSN" userLabel="Description Label">
-                                            <rect key="frame" x="0.0" y="335.66666666666669" width="353" height="81.333333333333314"/>
+                                            <rect key="frame" x="0.0" y="677.66666666666663" width="353" height="81.333333333333371"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" systemColor="systemYellowColor"/>
                                             <nil key="highlightedColor"/>
@@ -89,6 +99,7 @@
         </view>
     </objects>
     <resources>
+        <image name="heart" catalog="system" width="128" height="107"/>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

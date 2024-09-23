@@ -9,13 +9,13 @@ import Foundation
 
 struct MovieModel: Codable {
     let title: String?
-    let movieID: String?
+    let movieId: String?
     let poster: String?
     let year: String?
 
     enum CodingKeys: String, CodingKey {
         case title = "Title"
-        case movieID = "imdbID"
+        case movieId = "imdbID"
         case poster = "Poster"
         case year = "Year"
     }
@@ -40,6 +40,8 @@ struct MovieDetailModel: Codable {
     let plot: String?
     let imdbRating: String?
     let poster: String?
+    var isFavourite: Bool?
+    var movieId: String?
 
     enum CodingKeys: String, CodingKey {
         case title = "Title"
@@ -52,5 +54,7 @@ struct MovieDetailModel: Codable {
         case plot = "Plot"
         case poster = "Poster"
         case imdbRating
+        case isFavourite
+        case movieId
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 enum Constants {
-    static let commonOk = "Tamam"
+    static let commonOk = "Ok"
 
     enum AppConstants {
         static let remoteConfigLogoKey = "splashScreenLogoName"
@@ -23,11 +23,21 @@ enum Constants {
     }
 
     enum HomeVC {
-        static let minCharErrorTitle = "En az üç harf giriniz."
-        static let unableToFetch = "Filmler yüklenirken bir sorunla karşılaşıldı."
+        static let minCharErrorTitle = "Please type in at least 3 characters."
+        static let unableToFetch = "An error occured while loading movies."
     }
 
     enum SplashVC {
-        static let noConnectionErrorTitle = "İnternete bağlı değilsiniz."
+        static let noConnectionErrorTitle = "You are not connected to the Internet."
     }
+
+    enum FavouriteVC {
+        static let noMoviesAddedText = "No favorite movies yet"
+    }
+
+    enum MovieDetailVC {
+        static let favoriteMovieAddedText = "Added to Favorites !"
+        static let favoriteMovieRemovedText = "Removed from Favorites !"
+    }
+
 }

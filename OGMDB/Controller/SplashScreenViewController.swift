@@ -30,7 +30,7 @@ class SplashScreenViewController: UIViewController {
             guard let self = self else { return }
             let logo = Constants.Image.ogmdbLogo
             if status == .success,
-                error == nil {
+               error == nil {
                 self.remoteConfig.activate(completion: { [weak self] _, error in
                     guard let self = self, error == nil else { return }
                     let rcLogoKey = Constants.AppConstants.remoteConfigLogoKey
@@ -67,9 +67,25 @@ class SplashScreenViewController: UIViewController {
     }
 
     func goToHomeScreen() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            let vc = HomeScreenViewController(nibName: String(describing: HomeScreenViewController.self), bundle: nil)
-            self.navigationController?.setViewControllers([vc], animated: true)
+        DispatchQueue.main.async() {
+            let tabBarVC = UITabBarController()
+            tabBarVC.tabBar.tintColor = .systemYellow
+            tabBarVC.tabBar.unselectedItemTintColor = .systemYellow
+            let homeVC = HomeScreenViewController(
+                nibName: String(describing: HomeScreenViewController.self),
+                bundle: nil
+            )
+            let homeItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
+            homeVC.tabBarItem = homeItem
+            let favVC = FavouriteScreenViewController(
+                nibName: String(describing: FavouriteScreenViewController.self),
+                bundle: nil
+            )
+            let favItem = UITabBarItem(title: "Favourites", image: UIImage(systemName: "heart"), selectedImage: UIImage(systemName: "heart.fill"))
+            favVC.tabBarItem = favItem
+            tabBarVC.viewControllers = [homeVC, favVC]
+            self.navigationController?.setViewControllers([tabBarVC], animated: true)
         }
     }
 }
+

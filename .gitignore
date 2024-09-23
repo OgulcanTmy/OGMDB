@@ -1,5 +1,2 @@
 .DS_Store
-Podfile
-Podfile.lock
 Pods
-GoogleService-Info.plist
